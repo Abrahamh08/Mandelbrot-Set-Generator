@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <complex.h>
 
+int inset(double complex c, int startx, int endx, int starty, int endy);
 int main() {
-  int startingPointX = -3,
-      endingPointX = 9,
+  int startingPointX = -4,
+      endingPointX = 6,
       startingPointY = -2,
       endingPointY = 3;
   double i;
@@ -12,10 +13,14 @@ int main() {
     printf("\n");
     for (i = startingPointX; i < endingPointX; i += .05) {
       double complex c = i + j * I;
-      if (!inSet(c, startingPointX, endingPointX, startingPointY, endingPointY)) {
-        printf("+");
+      int a = inSet(c, startingPointX, endingPointX, startingPointY, endingPointY);
+      if (!a) {
+        putchar('/');
       } else {
-        printf(" ");
+        char c = '+';
+        if (a > 30) c = '.';
+        if (a > 85) c = ' ';
+        putchar(c);
       }
     }
   }
@@ -28,7 +33,7 @@ int inSet(double complex c, int startx, int endx, int starty, int endy) {
   for (i = 100; i > 0; i--) {
     z = z * z + c;
     if (creal(z) < startx || creal(z) > endx || cimag(z) < starty || cimag(z) > endy) {
-      return 1;
+      return i;
     }
   }
   return 0;
