@@ -1,44 +1,48 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <complex.h>
 
-int inset(double complex c, int startx, int endx, int starty, int endy);
-int main() {
-    int startingPointX = -2,
-        startingPointY = -2,
-        endingPointY = 1;
-    double endingPointX = .8;
-    double i;
-    double j;
-    for (j = startingPointY; j < endingPointY; j += .01) {
-        putchar('\n');
-        for (i = startingPointX; i < endingPointX; i += .003) {
-            double complex c = i + j * I;
-            int a = inSet(c, startingPointX, endingPointX, startingPointY, endingPointY);
-            if (!a) {
-                putchar(' ');
-            } else {
-                char c = '+';
-                if (a > 90000) c = '#';
-                if (a > 99600) c = '.';
-                if (a > 99800) c = ':';
-                if (a > 99920) c = ',';
-                if (a > 99960) c = '@';
-                if (a > 99990) c = '$';
-                putchar(c);
-            }
-        }
-    }
-    return 0;
-}
-
-int inSet(double complex c, int startx, double endx, int starty, int endy) {
+int inSet(unsigned int max, double complex c, int startx, double endx, int starty, int endy) {
     int i;
     double complex z = 0;
-    for (i = 100000; i > 0; i--) {
+    for (i = max; i > 0; i--) {
         z = z * z + c;
         if (creal(z) < startx || creal(z) > endx || cimag(z) < starty || cimag(z) > endy) {
             return i;
         }
     }
+    return 0;
+}
+
+int main(int argc, char **argv) {
+    unsigned int max = 1000;
+    if (argc > 1) max = atoi(argv[1]);
+
+    double startingPointX = -2,
+           startingPointY = -1,
+           endingPointY = 1,
+           endingPointX = .8;
+    double i, j;
+
+    for (j = startingPointY; j < endingPointY; j += .006) {
+        putchar('\n');
+        for (i = startingPointX; i < endingPointX; i += .0018) {
+            double complex c = i + j * I;
+            int a = inSet(max, c, startingPointX, endingPointX, startingPointY, endingPointY);
+            if (!a) {
+                putchar(' ');
+            } else {
+                char c = '+';
+                if (a > max * 0.9)    c = '#';
+                if (a > max * 0.996)  c = '.';
+                if (a > max * 0.998)  c = ':';
+                if (a > max * 0.9992) c = ',';
+                if (a > max * 0.9996) c = '@';
+                if (a > max * 0.9999) c = '$';
+                putchar(c);
+            }
+        }
+    }
+
     return 0;
 }
