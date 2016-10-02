@@ -1,1 +1,1 @@
-Trying to learn C by making a thing
+Trying to learn C by making an thing
